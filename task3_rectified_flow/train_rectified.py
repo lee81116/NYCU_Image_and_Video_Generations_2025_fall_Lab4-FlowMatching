@@ -49,7 +49,7 @@ def main(args):
     config.device = f"cuda:{args.gpu}"
 
     now = get_current_time()
-    assert args.use_cfg, "In Assignment 7, we train with CFG setup only."
+    assert args.use_cfg, "In this assignment, we train with CFG setup only."
 
     # Create save directory with reflow iteration number
     if args.use_cfg:
@@ -159,8 +159,7 @@ def main(args):
                 x_0, z_1 = x_0.to(config.device), z_1.to(config.device)
                 label = None
 
-            ######## TODO ########
-            # Implement rectified flow training:
+            # Rectified flow training:
             # For reflow, we train on synthetic pairs (Z_0^(k-1), Z_1^(k-1)) from the 
             # previous rectified flow, but use the SAME CFM loss as the base flow.
             #
@@ -173,7 +172,6 @@ def main(args):
                 loss = fm.get_loss(z_1, class_label=label, x0=x_0)
             else:
                 loss = fm.get_loss(z_1, x0=x_0)
-            ######################
 
             pbar.set_description(f"Loss: {loss.item():.4f}")
 

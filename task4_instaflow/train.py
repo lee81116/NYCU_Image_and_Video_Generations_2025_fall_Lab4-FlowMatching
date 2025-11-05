@@ -29,7 +29,7 @@ def main(args):
     config.device = f"cuda:{args.gpu}"
 
     now = get_current_time()
-    assert args.use_cfg, f"In Assignment 7, we sample images with CFG setup only."
+    assert args.use_cfg, f"In this assignment, we sample images with CFG setup only."
 
     if args.use_cfg:
         save_dir = Path(f"results/cfg_fm-{now}")

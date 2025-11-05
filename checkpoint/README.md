@@ -1,0 +1,1 @@
+Please download the checkpoint file of DDPM teacher from [this link](https://drive.google.com/drive/folders/1UaAGGDPXvP1JKsMTEChy5CtZZPCfpcho?usp=sharing) and place it in the `checkpoint/` directory for task 4.

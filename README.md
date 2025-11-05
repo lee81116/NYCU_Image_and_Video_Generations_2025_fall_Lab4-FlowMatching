@@ -32,11 +32,11 @@ This assignment consists of **4 tasks** with a total score of **100 points**:
 
 | Task | Points | Description |
 |------|--------|-------------|
-| Task 1 | 20 pts | 2D Flow Matching Implementation |
+| Task 1 | 10 pts | 2D Flow Matching Implementation |
 | Task 2 | 20 pts | Image Flow Matching with CFG |
 | Task 3 | 20 pts | Rectified Flow |
 | Task 4 | 25 pts | InstaFlow One-Step Generation |
-| **Report** | **15 pts** | **Analysis, results, and discussion** |
+| **Report** | **25 pts** | **Analysis, results, and discussion** |
 | **Total** | **100 pts** | |
 
 ---
@@ -59,7 +59,7 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
-**Note:** This assignment depends on implementations from previous assignments. You may need to copy the checkpoint files of your trained models from Assignment 1 (DDPM) as teachers for Task 4 (InstaFlow).
+**Note:** Please use Python 3.10 for compatibility.
 
 ## Recommended Reading
 
@@ -69,7 +69,7 @@ To better understand the concepts and implementations in this assignment, we enc
   - Lipman, Y., et al. (2022). "Flow Matching for Generative Modeling." [arXiv:2210.02747](https://arxiv.org/abs/2210.02747)
 
 - **Task 3: Rectified Flow**
-  - Liu, Q., et al. (2022). "Rectified Flow: A Marginal Preserving Approach to Optimal Transport." [arXiv:2209.03003](https://arxiv.org/abs/2209.03003)
+  - Liu, X., et al. (2022). "Flow Straight and Fast: Learning to Generate and Transfer Data with Rectified Flow" [arXiv:2209.03003](https://arxiv.org/abs/2209.03003)
 
 - **Task 4: InstaFlow**
   - Liu, X., et al. (2023). "InstaFlow: One Step is Enough for High-Quality Diffusion-Based Text-to-Image Generation." [arXiv:2309.06380](https://arxiv.org/abs/2309.06380)
@@ -79,7 +79,7 @@ To better understand the concepts and implementations in this assignment, we enc
 
 ## Tasks
 
-### Task 1: 2D Flow Matching (20 points)
+### Task 1: 2D Flow Matching (10 points)
 
 - **Directory**: `task1_2d_flow_matching/`
 - **Description**: Implement and visualize Flow Matching on 2D toy datasets.
@@ -92,7 +92,7 @@ You need to implement the following in `task1_2d_flow_matching/`:
    - ✏️ `FMScheduler.compute_psi_t()`: Implement conditional flow ψ_t(x|x_1)
    - ✏️ `FMScheduler.step()`: Implement Euler ODE solver
    - ✏️ `FlowMatching.get_loss()`: Implement CFM training loss
-   - ✏️ `FlowMatching.sample()`: Implement sampling with optional CFG
+   - ✏️ `FlowMatching.sample()`: Implement sampling with CFG
 
 2. **`network.py`**:
    - ✏️ Implement `SimpleNet` (from Assignment 1)
@@ -110,7 +110,13 @@ The notebook will train the model and visualize trajectories on toy datasets (Sw
 
 - Visualizations of learned trajectories
 - Chamfer Distance metric
-- Comparison with different numbers of inference steps
+
+#### 💯 Grading
+
+- 10 points: Achieve Chamfer Distance lower than 40.
+- 5 points: Achieve greater or equal to 40 and less than 60.
+- 0 point: otherwise.
+
 
 ### Task 2: Image Generation with Flow Matching (20 points)
 
@@ -126,10 +132,6 @@ You need to implement the following in `image_common/`:
    - ✏️ `FMScheduler.step()`: Implement Euler ODE solver
    - ✏️ `FlowMatching.get_loss()`: Implement CFM training loss
    - ✏️ `FlowMatching.sample()`: Implement sampling with CFG support
-
-2. **`network.py`** (Classifier-Free Guidance):
-   - ✅ **COMPLETED**: Random null conditioning during training
-   - ✅ **COMPLETED**: Class embedding integration
 
 #### 🚀 How to Run
 
@@ -166,9 +168,15 @@ python -m fid.measure_fid data/afhq/eval ${SAVE_DIR_PATH}
 #### 📊 What to Report
 
 - Training loss curves
-- Generated image samples (with/without CFG)
 - FID scores with different CFG scales
 - Comparison of inference steps (10, 20, 50)
+
+#### 💯 Grading
+
+- 20 points: Achieve FID lower than 30 with CFG=7.5.
+- 10 points: Achieve FID between 30 and 50 with CFG=7.5.
+- 0 point: otherwise.
+
 
 ### Task 3: Rectified Flow (20 points)
 
@@ -177,7 +185,10 @@ python -m fid.measure_fid data/afhq/eval ${SAVE_DIR_PATH}
 
 #### 📝 TODO
 
-**Note**: This task has **NO additional TODOs** - you will reuse your implementations from Tasks 1 and 2. The focus is on understanding and applying the reflow procedure.
+You need to implement the following in `task3_rectified_flow/`:
+
+1. **`generate_reflow_data.py`**:
+   - ✏️ Implement data generation using the trained Task 2 model to create (x_0, x_1) pairs following the ODE.
 
 #### 🚀 How to Run
 
@@ -242,10 +253,15 @@ python -m fid.measure_fid data/afhq/eval results/rectified_10steps
 #### 📊 What to Report
 
 - FID scores with different numbers of inference steps (5, 10, 20)
-- Comparison with Task 2 base Flow Matching (same steps)
+- Comparison with Task 2 Flow Matching (same steps)
 - Speedup analysis (generation time comparison)
 - Discussion: Why does rectified flow enable fewer sampling steps?
-- Optional: Visualize trajectory straightness on 2D toy datasets
+
+#### 💯 Grading
+
+- 20 points: Achieve FID lower than 30 with CFG=7.5 with 5 steps.
+- 10 points: Achieve FID between 30 and 50 with CFG=7.5 with either 5 or 10 steps.
+- 0 point: otherwise.
 
 ### Task 4: InstaFlow One-Step Generation (25 points)
 
@@ -288,7 +304,7 @@ You need to implement the following in `image_common/instaflow.py`:
 #### 🚀 How to Run
 
 **Prerequisites**:
-- DDPM checkpoint from Assignment 1
+- DDPM checkpoint download from [here](https://drive.google.com/drive/folders/1UaAGGDPXvP1JKsMTEChy5CtZZPCfpcho?usp=sharing) and place it in `checkpoint/` directory.
 - Install LPIPS (optional): `pip install lpips`
 
 ---
@@ -300,7 +316,7 @@ Create a straight-path teacher model from DDPM:
 **Step 1a: Generate 2-RF Training Data**
 ```bash
 python -m task4_instaflow.phase1_generate_2rf_data \
-  --ddpm_ckpt_path /path/to/your/ddpm_model.ckpt \
+  --ddpm_ckpt_path ./checkpoint/final.ckpt \
   --num_samples 50000 \
   --save_dir data/afhq_2rf \
   --use_cfg \
@@ -393,70 +409,15 @@ python -m fid.measure_fid data/afhq/eval results/instaflow_samples
 - Visual quality comparison (show sample images)
 - Discussion:
   - Why is two-phase training necessary?
+  - Why don't we employ LPIPS loss in Phase 1?
   - Effect of LPIPS loss on visual quality
   - Quality-speed tradeoff analysis
   - Why use different CFG scales (α₁=7.5 vs α₂=1.5)?
 
 #### 📝 Notes
 
-- **Training Time**: ~14 hours per phase (100K steps each), total ~28 hours
 - **CFG Strategy**:
   - Phase 1 uses α₁=7.5 (high quality from DDPM)
   - Phase 2 uses α₂=1.5 (prevents over-saturation)
   - Inference requires no CFG (baked into weights!)
 - **LPIPS Loss**: Optional but may improve visual quality
-- **See Also**: `TASK4_IMPLEMENTATION_SUMMARY.md` for detailed technical documentation
-
----
-
-## Quick Reference
-
-### All Commands Use `python -m`
-
-All scripts use the module execution format for consistent import resolution:
-
-```bash
-# Good: Using python -m
-python -m task2_image_flow_matching.train --use_cfg
-python -m task4_instaflow.phase1_train_2rf --reflow_data_path data/afhq_2rf
-
-# Bad: Direct script execution (may cause import errors)
-python task2_image_flow_matching/train.py --use_cfg
-```
-
-### File Organization
-
-```
-Diffusion-Assignment7-Flow/
-├── task1_2d_flow_matching/      # 2D visualization
-├── task2_image_flow_matching/    # Base Flow Matching
-├── task3_rectified_flow/         # Rectified Flow (FM → 1-RF)
-├── task4_instaflow/              # InstaFlow (DDPM → 2-RF → InstaFlow)
-│   ├── phase1_generate_2rf_data.py
-│   ├── phase1_train_2rf.py
-│   ├── generate_instaflow_data.py
-│   ├── train_instaflow.py
-│   └── evaluate_instaflow.py
-├── image_common/                 # Shared components
-│   ├── fm.py                    # Flow Matching
-│   ├── instaflow.py             # InstaFlow Model
-│   ├── network.py               # U-Net with CFG
-│   ├── ddpm_teacher/            # DDPM interface
-│   └── sampling.py              # Unified sampling
-└── fid/                         # FID evaluation
-```
-
----
-
-## Additional Resources
-
-- **Detailed Documentation**: See `TASK4_IMPLEMENTATION_SUMMARY.md`
-- **Project Instructions**: See `CLAUDE.md` for comprehensive guidance
-- **Issue Tracking**: Check GitHub issues for known problems
-- **Papers**: See "Recommended Reading" section above
-
----
-
-## License
-
-See `LICENSE` file for details.

@@ -52,7 +52,7 @@ def main(args):
     config.device = f"cuda:{args.gpu}"
 
     now = get_current_time()
-    assert args.use_cfg, "In Assignment 7, we train with CFG setup only."
+    assert args.use_cfg, "In this assignment, we train with CFG setup only."
 
     # Create save directory
     save_dir = Path(f"results/instaflow-{now}")

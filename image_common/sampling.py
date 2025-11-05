@@ -36,7 +36,7 @@ def main(args):
                 guidance_scale=args.cfg_scale,
             )
         else:
-            raise NotImplementedError("In Assignment 7, we sample images with CFG setup only.")
+            raise NotImplementedError("In this assignment, we sample images with CFG setup only.")
 
         pil_images = tensor_to_pil_image(samples)
 
