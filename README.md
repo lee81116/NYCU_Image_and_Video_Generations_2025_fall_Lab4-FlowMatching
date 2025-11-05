@@ -160,7 +160,7 @@ python -m image_common.sampling \
 
 **Step 4: Evaluate FID**
 ```bash
-python -m fid.measure_fid data/afhq/val ${SAVE_DIR_PATH}
+python -m fid.measure_fid data/afhq/eval ${SAVE_DIR_PATH}
 ```
 
 #### 📊 What to Report
@@ -235,8 +235,8 @@ python -m image_common.sampling \
 **Step 4: Evaluate FID**
 
 ```bash
-python -m fid.measure_fid data/afhq/val results/rectified_5steps
-python -m fid.measure_fid data/afhq/val results/rectified_10steps
+python -m fid.measure_fid data/afhq/eval results/rectified_5steps
+python -m fid.measure_fid data/afhq/eval results/rectified_10steps
 ```
 
 #### 📊 What to Report
@@ -380,7 +380,7 @@ python -m image_common.sampling \
 
 **Step 5: Measure FID**
 ```bash
-python -m fid.measure_fid data/afhq/val results/instaflow_samples
+python -m fid.measure_fid data/afhq/eval results/instaflow_samples
 ```
 
 #### 📊 What to Report
