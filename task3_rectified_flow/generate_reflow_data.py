@@ -73,8 +73,8 @@ def main(args):
 
         # Sample class labels if using CFG
         if args.use_cfg:
-            # Sample labels from 1 to num_classes-1 (skip null class 0)
-            labels = torch.randint(1, num_classes, (B,)).to(device)
+            # Sample labels from 1 to num_classes (skip null class 0)
+            labels = torch.randint(1, num_classes + 1, (B,)).to(device)
         else:
             labels = None
 
