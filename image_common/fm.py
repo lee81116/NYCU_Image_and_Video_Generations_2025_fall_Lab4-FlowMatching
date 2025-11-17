@@ -132,7 +132,7 @@ class FlowMatching(nn.Module):
         #    Hint: use .pow(2).mean()
 
         t = t.view(-1, *([1] * (x1.dim() - 1)))  # TODO: reshape t for broadcasting
-        x_t = self.conditional_psi_sample(x1, t, x0)  # TODO: compute interpolated sample
+        x_t = (1-t) * x0 + t * x1  # TODO: compute interpolated sample
         u_t = x1 - x0  # TODO: compute target velocity
         # TODO: get model prediction
         if class_label is not None:
