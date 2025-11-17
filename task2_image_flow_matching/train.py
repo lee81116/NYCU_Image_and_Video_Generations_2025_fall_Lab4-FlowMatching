@@ -35,9 +35,9 @@ def main(args):
     assert args.use_cfg, f"In this assignment, we sample images with CFG setup only."
 
     if args.use_cfg:
-        save_dir = Path(f"results/cfg_fm-{now}")
+        save_dir = Path(f"/content/drive/MyDrive/IV_Lab4/results/cfg_fm-{now}")
     else:
-        save_dir = Path(f"results/fm-{now}")
+        save_dir = Path(f"/content/drive/MyDrive/IV_Lab4/results/fm-{now}")
     save_dir.mkdir(exist_ok=True, parents=True)
     print(f"save_dir: {save_dir}")
 
