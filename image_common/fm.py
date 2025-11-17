@@ -131,8 +131,8 @@ class FlowMatching(nn.Module):
         # 5. Calculate the loss: MSE between predicted and target velocity
         #    Hint: use .pow(2).mean()
 
-        t = t.view(-1, *([1] * (x1.dim() - 1)))  # TODO: reshape t for broadcasting
-        x_t = (1-t) * x0 + t * x1  # TODO: compute interpolated sample
+        t_b = t.view(-1, *([1] * (x1.dim() - 1)))  # TODO: reshape t for broadcasting
+        x_t = (1-t_b) * x0 + t_b * x1  # TODO: compute interpolated sample
         u_t = x1 - x0  # TODO: compute target velocity
         # TODO: get model prediction
         if class_label is not None:
