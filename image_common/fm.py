@@ -54,7 +54,7 @@ class FMScheduler(nn.Module):
         # Hint: The interpolation formula is x_t = (1-t) * x_0 + t * x_1
         # where 'x' is x_0 (noise) and 'x1' is the data sample.
         
-        psi_t = None  # TODO: implement the interpolation
+        psi_t = (1-t) * x + t * x1  # TODO: implement the interpolation
         ######################
 
         return psi_t
@@ -75,7 +75,7 @@ class FMScheduler(nn.Module):
         #   vt: predicted velocity (the direction to move)
         #   dt: time step size
         
-        x_next = None  # TODO: implement the Euler step
+        x_next = xt + dt * vt  # TODO: implement the Euler step
         ######################
 
         return x_next
@@ -131,11 +131,15 @@ class FlowMatching(nn.Module):
         # 5. Calculate the loss: MSE between predicted and target velocity
         #    Hint: use .pow(2).mean()
 
-        t_ = None  # TODO: reshape t for broadcasting
-        x_t = None  # TODO: compute interpolated sample
-        u_t = None  # TODO: compute target velocity
-        model_out = None  # TODO: get model prediction
-        loss = None  # TODO: compute MSE loss
+        t = t.view(-1, *([1] * (x1.dim() - 1)))  # TODO: reshape t for broadcasting
+        x_t = self.conditional_psi_sample(x1, t, x0)  # TODO: compute interpolated sample
+        u_t = x1 - x0  # TODO: compute target velocity
+        # TODO: get model prediction
+        if class_label is not None:
+            model_out = self.network(x_t, t, class_label=class_label)
+        else:
+            model_out = self.network(x_t, t)
+        loss = F.mse_loss(model_out, u_t)  # TODO: compute MSE loss
         ######################
 
         return loss
@@ -204,10 +208,17 @@ class FlowMatching(nn.Module):
             #
             # 4. Update xt for the next iteration: xt = xt_next
 
-            dt = None  # TODO: compute time step size
+            dt = expand_t(t_next - t, xt)  # TODO: compute time step size
             vt = None  # TODO: predict velocity (with or without CFG)
-            xt_next = None  # TODO: perform Euler step
+            if do_classifier_free_guidance:
+                v_cond = self.network(xt, t, class_label=class_label)
+                v_uncond = self.network(xt, t, class_label=None)
+                vt = v_uncond + guidance_scale * (v_cond - v_uncond)
+            else:
+                vt = self.network(xt, t, class_label=class_label)
+            xt_next = self.fm_scheduler.step(xt, vt, dt)  # TODO: perform Euler step
             # TODO: update xt
+            xt = xt_next
             ######################
 
             traj[-1] = traj[-1].cpu()
