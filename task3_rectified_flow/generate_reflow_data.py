@@ -83,10 +83,7 @@ def main(args):
         # Use fm.sample() or manually implement the ODE integration
         # to generate z_1 from x_0
         # z_1 = x_0 Replace this with actual generation
-        traj = fm.sample(shape=shape, num_inference_timesteps=args.num_inference_steps, return_traj=True, class_label=labels, guidance_scale=args.cfg_scale, verbose=False)
-
-        x_0 = traj[0]
-        z_1 = traj[-1]
+        z_1 = fm.sample(shape=shape, num_inference_timesteps=args.num_inference_steps, return_traj=False, class_label=labels, guidance_scale=args.cfg_scale, verbose=False)
         ######################
 
         # Save the pairs to disk
