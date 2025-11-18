@@ -53,9 +53,9 @@ def main(args):
 
     # Create save directory with reflow iteration number
     if args.use_cfg:
-        save_dir = Path(f"results/rectified_fm_{args.reflow_iteration}-{now}")
+        save_dir = Path(f"/content/drive/MyDrive/IV_Lab4/results/rectified_fm_{args.reflow_iteration}-{now}")
     else:
-        save_dir = Path(f"results/rectified_fm_{args.reflow_iteration}_uncond-{now}")
+        save_dir = Path(f"/content/drive/MyDrive/IV_Lab4/results/rectified_fm_{args.reflow_iteration}_uncond-{now}")
     save_dir.mkdir(exist_ok=True, parents=True)
     print(f"save_dir: {save_dir}")
 
