@@ -14,7 +14,7 @@ def main(args):
     device = f"cuda:{args.gpu}"
     
     fm = FlowMatching(None, None)
-    fm.load(args.ckpt_path, weight_only=False)
+    fm.load(args.ckpt_path)
     fm.eval()
     fm = fm.to(device)
 
